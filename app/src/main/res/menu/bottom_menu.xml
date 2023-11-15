@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/btn_search"
+        android:title="بحث"
+        android:icon="@drawable/baseline_search_24"/>
+
+    <item
+        android:id="@+id/btn_messages"
+        android:title="المراسلات"
+        android:icon="@drawable/baseline_message_24"/>
+
+
+
+
+
+    <item
+        android:id="@+id/btn_add_post"
+        android:title="إضافة"
+        android:icon="@drawable/baseline_add_circle_24"
+        />
+
+
+
+
+
+
+
+
+    <item
+        android:id="@+id/btn_favort"
+        android:title="المفضلة"
+        android:icon="@drawable/baseline_star_24"/>
+
+    <item
+        android:id="@+id/btn_home"
+        android:title="مراح"
+
+        android:icon="@drawable/baseline_home_24"/>
+
+</menu>
