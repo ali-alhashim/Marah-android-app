@@ -1,9 +1,8 @@
 package sa.com.marah
-
-
 import android.app.Dialog
 import android.content.ClipData.Item
 import android.content.ContentValues.TAG
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +16,8 @@ import android.view.Window
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
@@ -25,14 +26,28 @@ import sa.com.marah.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-
+    public val SERVER_URL = "http://127.0.0.1:8000"
     private  lateinit var binding: ActivityMainBinding
+    private val INTERNET_PERMISSION_REQUEST_CODE = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
+
+        // Check if the internet permission is granted
+        if (ContextCompat.checkSelfPermission(this, "android.permission.INTERNET") != PackageManager.PERMISSION_GRANTED ) {
+            // Request the permission
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf("android.permission.INTERNET"),
+                INTERNET_PERMISSION_REQUEST_CODE
+            )
+        }
+
+
 
 
 
@@ -90,7 +105,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.bottom_sheet_layout_cities)
 
-        val editLayout:LinearLayout = dialog.findViewById(R.id.citiesBottomSheet)
+        val CitiesLayout:LinearLayout = dialog.findViewById(R.id.CitiesLinearLayout)
+
+        // send get http request to [SERVER_URL/api/locations] to get locations list
+        val url = SERVER_URL+"/api/locations"
+
 
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -100,6 +119,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     }
+
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId)
