@@ -1,12 +1,19 @@
 package sa.com.marah
 
 
+import android.app.Dialog
 import android.content.ContentValues.TAG
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 
 import android.view.MenuItem
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -57,7 +64,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
           binding.TopNavigationMenu.setOnItemSelectedListener { item ->
               when(item.itemId)
               {
-                R.id.cities ->  Toast.makeText(this, "show cities list", Toast.LENGTH_LONG).show()
+                R.id.cities ->  showCitiesSheet()
                 R.id.filter_category -> Toast.makeText(this, "show Categories", Toast.LENGTH_LONG).show()
                 R.id.your_location ->    Toast.makeText(this, "get your location and select nearst city", Toast.LENGTH_LONG).show()
               }
@@ -68,6 +75,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
+
+
+    }
+
+    private fun showCitiesSheet() {
+        val dialog:Dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.bottom_sheet_layout_cities)
+
+        val editLayout:LinearLayout = dialog.findViewById(R.id.citiesBottomSheet)
+
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.BOTTOM)
 
 
     }
