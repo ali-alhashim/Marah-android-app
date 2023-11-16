@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:background="@drawable/dialog_bg"
     android:id="@+id/citiesBottomSheet"
-    android:layout_height="match_parent">
+    android:layout_height="350dp"
+
+
+    >
 
     <TextView
         android:layout_width="match_parent"
@@ -26,46 +29,7 @@
             android:id="@+id/CitiesLinearLayout"
             android:orientation="vertical">
 
-            <Button
-                android:layout_width="match_parent"
-                android:text="الرياض"
-                android:textColor="@color/black"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"/>
 
-
-            <Button
-                android:layout_width="match_parent"
-                android:text="الدمام"
-                android:textColor="@color/black"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:text="القصيم"
-                android:textColor="@color/black"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:text="الأحساء"
-                android:textColor="@color/black"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:text="مكة"
-                android:textColor="@color/black"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </ScrollView>
