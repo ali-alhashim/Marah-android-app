@@ -31,7 +31,9 @@ import sa.com.marah.databinding.ActivityMainBinding
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import sa.com.marah.Data.ApiServiceCategroies
 import sa.com.marah.Data.ApiServiceLocations
+import sa.com.marah.Data.CategroiesDataClass
 import sa.com.marah.Data.LocationsDataClass
 
 
@@ -97,7 +99,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
               when(item.itemId)
               {
                 R.id.cities ->  showCitiesSheet()
-                R.id.filter_category -> Toast.makeText(this, "show Categories", Toast.LENGTH_LONG).show()
+                R.id.filter_category ->  showCategoriesSheet()
                 R.id.your_location ->    Toast.makeText(this, "get your location and select nearst city", Toast.LENGTH_LONG).show()
               }
               true
@@ -117,6 +119,58 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
    private fun handleCityButtonClick(citiyId:Int)
    {
        Log.i(TAG,"you click on cite Id : ${citiyId}")
+   }
+    private fun handleCategoryButtonClick(categoryId:Int)
+    {
+        Log.i(TAG,"you click on Category Id : ${categoryId}")
+    }
+
+   private fun showCategoriesSheet()
+   {
+       val dialog:Dialog = Dialog(this)
+       dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+       dialog.setContentView(R.layout.bottom_sheet_layout_categories)
+       val CategoryLayout:LinearLayout = dialog.findViewById(R.id.CategoriesLinearLayout)
+        //**********************************************
+       val api = Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build().create(ApiServiceCategroies::class.java)
+       api.getCategories().enqueue(object : Callback<List<CategroiesDataClass>>{
+           override fun onResponse(
+               call: Call<List<CategroiesDataClass>>,
+               response: Response<List<CategroiesDataClass>>
+           ) {
+               if(response.isSuccessful)
+               {
+                   Log.d(TAG, "Http get request is Successful for locations")
+                   response.body()?.let{
+                       for (category in it)
+                       {
+                           Log.i(TAG, "on Response  location Name:${category.name} with Id: ${category.id}")
+                           // create Buttons with citiy name and add click lisetner with id parameter
+                           val catrgoryButton = Button(this@MainActivity)
+                           catrgoryButton.text = category.name
+                           catrgoryButton.setOnClickListener {
+                               // Handle button click, you can use location.id here
+                               // For example, pass it to another function or start a new activity
+                               handleCategoryButtonClick(category.id)
+                           }
+                           CategoryLayout.addView(catrgoryButton)
+                       }
+                   }
+               }
+           }
+
+           override fun onFailure(call: Call<List<CategroiesDataClass>>, t: Throwable) {
+
+               Log.d(TAG, "Http get request Failure for locations ${t.message} ............${api.toString()}")
+           }
+
+       })
+       //***********************************************
+       dialog.show()
+       dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+       dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+       dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+       dialog.window?.setGravity(Gravity.BOTTOM)
    }
 
 
