@@ -2,6 +2,7 @@ package sa.com.marah
 
 
 import android.app.Dialog
+import android.content.ClipData.Item
 import android.content.ContentValues.TAG
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -44,6 +45,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         binding.bottomNavigation.background = null
 
+
+
         binding.bottomNavigation.setOnItemSelectedListener{ item ->
             when(item.itemId){
                 R.id.btn_favort -> openFragment(FavoriteFragment())
@@ -55,6 +58,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             true
 
         }
+
+        binding.bottomNavigation.selectedItemId = R.id.btn_home
 
 
         val homeFragment = HomeFragment()
@@ -70,6 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
               }
               true
           }
+
 
 
 
