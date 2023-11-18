@@ -39,6 +39,54 @@
             </com.google.android.material.textfield.TextInputLayout>
             <!--/post subject -->
 
+            <!-- category -->
+
+            <Spinner
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:background="#DADADA"
+
+                android:id="@+id/post_category_Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+
+             />
+
+            <!-- / category -->
+
+            <!-- sub category -->
+
+            <Spinner
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:background="#DADADA"
+
+                android:id="@+id/post_subcategory_Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+
+                />
+
+            <!-- / sub category -->
+
+            <!-- post city -->
+
+            <Spinner
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:background="#DADADA"
+
+                android:id="@+id/post_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+
+                />
+
+            <!-- / sub category -->
+
             <Button
                 android:id="@+id/btn_post_submit"
                 android:layout_width="match_parent"
