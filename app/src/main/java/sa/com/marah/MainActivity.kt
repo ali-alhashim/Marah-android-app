@@ -38,7 +38,7 @@ import sa.com.marah.Data.LocationsDataClass
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private val BASE_URL:String = "http://192.168.8.114:8000/"
+    public val BASE_URL:String = "http://192.168.8.114:8000/"
     private  lateinit var binding: ActivityMainBinding
     private val INTERNET_PERMISSION_REQUEST_CODE = 1
 

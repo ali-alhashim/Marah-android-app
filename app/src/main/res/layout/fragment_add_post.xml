@@ -78,14 +78,38 @@
                 android:padding="10dp"
                 android:background="#DADADA"
 
-                android:id="@+id/post_city"
+                android:id="@+id/post_city_Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown"
 
                 />
 
-            <!-- / sub category -->
+            <!-- / city -->
+
+            <Button
+                android:layout_margin="10dp"
+                android:id="@+id/btn_select_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="أختر الصور"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                 
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="أكتب هنا نص الإعلان"
+                android:id="@+id/post_text"
+                android:background="#DADADA"
+                android:textColor="@color/black"
+                android:textSize="25dp"
+                android:padding="10dp"
+                />
+
 
             <Button
                 android:id="@+id/btn_post_submit"
