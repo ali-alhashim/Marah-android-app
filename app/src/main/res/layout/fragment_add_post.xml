@@ -39,53 +39,115 @@
             </com.google.android.material.textfield.TextInputLayout>
             <!--/post subject -->
 
-            <!-- category -->
 
-            <Spinner
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:background="#DADADA"
 
-                android:id="@+id/post_category_Spinner"
+           <TableLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:stretchColumns="0">
+               <TableRow>
+
+                   <!-- category -->
+               <Spinner
+                   android:layout_marginTop="10dp"
+                   android:padding="10dp"
+                   android:background="#DADADA"
+                   android:id="@+id/post_category_Spinner"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:spinnerMode="dropdown"
+
+                   />
+                   <!-- / category -->
+                   <TextView
+                       android:text="التصنيف"
+                       android:textSize="20dp"
+                       android:textColor="@color/black"
+                       android:layout_margin="10dp"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"/>
+               </TableRow>
+
+               <TableRow>
+                   <!-- sub category -->
+
+                   <Spinner
+                       android:layout_marginTop="10dp"
+                       android:padding="10dp"
+                       android:background="#DADADA"
+
+                       android:id="@+id/post_subcategory_Spinner"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:spinnerMode="dropdown"
+
+                       />
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:text="التصنيف الفرعي"
+                       android:textSize="20dp"
+                       android:textColor="@color/black"
+                       android:layout_margin="10dp"
+                       />
+
+                   <!-- / sub category -->
+               </TableRow>
+
+               <TableRow>
+                   <!-- post city -->
+
+                   <Spinner
+                       android:layout_marginTop="10dp"
+                       android:padding="10dp"
+                       android:background="#DADADA"
+
+                       android:id="@+id/post_city_Spinner"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:spinnerMode="dropdown"
+
+                       />
+
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:text="المدينة"
+                       android:textSize="20dp"
+                       android:textColor="@color/black"
+                       android:layout_margin="10dp"
+                       />
+
+                   <!-- / city -->
+               </TableRow>
+
+
+
+           </TableLayout>
+
+
+            <!-- post text -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
+                android:textColorHint="@color/black"
 
-             />
+                android:hint="نص الإعلان">
 
-            <!-- / category -->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:id="@+id/post_text"
+                    />
 
-            <!-- sub category -->
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--/post text -->
 
-            <Spinner
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:background="#DADADA"
 
-                android:id="@+id/post_subcategory_Spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
 
-                />
 
-            <!-- / sub category -->
-
-            <!-- post city -->
-
-            <Spinner
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:background="#DADADA"
-
-                android:id="@+id/post_city_Spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-
-                />
-
-            <!-- / city -->
 
             <Button
                 android:layout_margin="10dp"
@@ -99,16 +161,7 @@
                  
                 />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="أكتب هنا نص الإعلان"
-                android:id="@+id/post_text"
-                android:background="#DADADA"
-                android:textColor="@color/black"
-                android:textSize="25dp"
-                android:padding="10dp"
-                />
+
 
 
             <Button

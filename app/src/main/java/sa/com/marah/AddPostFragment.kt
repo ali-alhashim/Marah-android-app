@@ -19,8 +19,10 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import sa.com.marah.Data.ApiServiceCategroies
+import sa.com.marah.Data.ApiServiceLocations
 import sa.com.marah.Data.ApiServiceSubCategories
 import sa.com.marah.Data.CategroiesDataClass
+import sa.com.marah.Data.LocationsDataClass
 import sa.com.marah.Data.SubCategoryDataClass
 
 
@@ -28,7 +30,9 @@ class AddPostFragment : Fragment() {
 
     private lateinit var postCategorySpinner: Spinner
     private lateinit var postSubCategorySpinner: Spinner
+    private lateinit var postCitySpinner : Spinner
     private lateinit var optionsSubCategories : MutableList<String>
+    private lateinit var optionsCity : MutableList<String>
     private lateinit var options: MutableList<String>
 
     override fun onCreateView(
@@ -38,14 +42,57 @@ class AddPostFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add_post, container, false)
 
-         postCategorySpinner = view.findViewById(R.id.post_category_Spinner)
-        postSubCategorySpinner = view.findViewById(R.id.post_subcategory_Spinner)
+         postCategorySpinner    = view.findViewById(R.id.post_category_Spinner)
+         postSubCategorySpinner = view.findViewById(R.id.post_subcategory_Spinner)
+         postCitySpinner        = view.findViewById(R.id.post_city_Spinner)
         //send http get request to api/categories to get the list
         options = mutableListOf()
+        optionsCity = mutableListOf()
 
+        //-----City Adapter
+        val adapterForCities = ArrayAdapter(requireContext(), R.layout.spinner_item_layout, optionsCity)
+        adapterForCities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        postCitySpinner.adapter = adapterForCities
+        //-----/
+
+        //************* call location api
+        val apiCity = Retrofit.Builder().baseUrl(MainActivity().BASE_URL).addConverterFactory(GsonConverterFactory.create()).build().create(
+            ApiServiceLocations::class.java)
+        apiCity.getLocations().enqueue(object : Callback<List<LocationsDataClass>> {
+            override fun onResponse(
+                call: Call<List<LocationsDataClass>>,
+                response: Response<List<LocationsDataClass>>
+            ) {
+                if(response.isSuccessful)
+                {
+                    Log.d(TAG, "Http get request is Successful for locations")
+                    var x = 0
+                    response.body()?.let{
+                        for (city in it)
+                        {
+                            //Log.i(TAG, "on Response  location Name:${category.name} with Id: ${category.id}")
+                            optionsCity.add(city.name)
+                            x = x + 1
+                        }
+                    }
+
+                    adapterForCities.notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<List<LocationsDataClass>>, t: Throwable) {
+
+                Log.d(TAG, "Http get request Failure for locations ${t.message} ............${apiCity.toString()}")
+            }
+
+        })
+        //*************/ locations
+
+        //----- adapter for category
         val adapterForPostCategory  = ArrayAdapter(requireContext(), R.layout.spinner_item_layout, options)
         adapterForPostCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         postCategorySpinner.adapter = adapterForPostCategory
+        //------/
 
 
         // onSelected item event
