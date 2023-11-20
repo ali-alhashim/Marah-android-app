@@ -147,9 +147,11 @@ class AddPostFragment : Fragment() {
 
         val btn_select_photo:Button = view.findViewById(R.id.btn_select_photo)
 
+        // Select photo or use Camera ----------------
         btn_select_photo.setOnClickListener(){
             Log.i(TAG,"popup dialog to select photo")
         }
+        //---------------------------------------------
 
 
 
