@@ -2,6 +2,7 @@ package sa.com.marah
 import android.app.Dialog
 import android.content.ClipData.Item
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -9,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
@@ -48,6 +51,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
+        setupUserName()
 
 
         // Check if the internet permission is granted
@@ -247,7 +252,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-    private fun openFragment(fragment:Fragment)
+     fun openFragment(fragment:Fragment)
     {
         Log.d(TAG, "openFragment: " + fragment.javaClass.simpleName)
 
@@ -262,6 +267,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
            }
 
 
+    }
+
+
+    fun setupUserName()
+    {
+        val navigationView: NavigationView = findViewById(R.id.navigationDrawer)
+        val menu: Menu = navigationView.menu
+        val menuItem: MenuItem? = menu.findItem(R.id.btn_account)
+
+        val preferences = getSharedPreferences("Marah.com.sa", Context.MODE_PRIVATE)
+
+        if(preferences.contains("username"))
+        {
+            //already username there
+            menuItem?.title = preferences.getString("username","")
+        }
     }
 
 
