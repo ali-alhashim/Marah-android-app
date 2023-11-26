@@ -3,13 +3,18 @@ package sa.com.marah
 
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.ContentValues.TAG
+import android.content.Context
+
 import android.content.Intent
 import android.net.Uri
 import kotlin.math.min
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 
 
 import android.os.Bundle
+import android.os.Environment
 
 
 import android.util.Log
@@ -23,8 +28,15 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 
 import android.widget.Spinner
+import androidx.documentfile.provider.DocumentFile
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 
 import retrofit2.Call
@@ -32,6 +44,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import sa.com.marah.Data.AddPostDataClass
+import sa.com.marah.Data.ApiServiceAddPost
 import sa.com.marah.Data.ApiServiceCategroies
 import sa.com.marah.Data.ApiServiceLocations
 import sa.com.marah.Data.ApiServiceSubCategories
@@ -40,18 +54,23 @@ import sa.com.marah.Data.LocationsDataClass
 import sa.com.marah.Data.SelectedImage
 import sa.com.marah.Data.SelectedImagesAdapter
 import sa.com.marah.Data.SubCategoryDataClass
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 
 
 class AddPostFragment : Fragment() {
 
     private val PICK_IMAGES_REQUEST_CODE = 1001
 
-    private val selectedImagesList: MutableList<SelectedImage> = mutableListOf()
+    private val selectedImagesList: MutableList<SelectedImage> = mutableListOf() // images input
     private lateinit var selectedImagesAdapter: SelectedImagesAdapter
-
-    private lateinit var postCategorySpinner: Spinner
-    private lateinit var postSubCategorySpinner: Spinner
-    private lateinit var postCitySpinner : Spinner
+    private lateinit var postSubjectInput:TextInputEditText // post subject input
+    private lateinit var postText: TextInputEditText // post text input
+    private lateinit var postCategorySpinner: Spinner    //Category input
+    private lateinit var postSubCategorySpinner: Spinner // sub Category input
+    private lateinit var postCitySpinner : Spinner       // City input
     private lateinit var optionsSubCategories : MutableList<String>
     private lateinit var optionsCity : MutableList<String>
     private lateinit var options: MutableList<String>
@@ -69,7 +88,8 @@ class AddPostFragment : Fragment() {
          postCategorySpinner    = view.findViewById(R.id.post_category_Spinner)
          postSubCategorySpinner = view.findViewById(R.id.post_subcategory_Spinner)
          postCitySpinner        = view.findViewById(R.id.post_city_Spinner)
-
+        postSubjectInput        = view.findViewById(R.id.post_subject)
+        postText                = view.findViewById(R.id.post_text)
         val recyclerView_selectedImages :RecyclerView = view.findViewById(R.id.recyclerView_selectedImages)
 
         //send http get request to api/categories to get the list
@@ -207,6 +227,93 @@ class AddPostFragment : Fragment() {
 
 
 
+        val submitBtn : Button = view.findViewById(R.id.btn_post_submit)
+        submitBtn.setOnClickListener()
+        {
+            // get all inputs and send to api/addpost
+            Log.i(TAG, "submit button clicked --------------------------------------")
+
+
+            // we have all input now submit http post request and go to post detail
+            // before you send post request check in token with user is there so we can post
+            // if not show message that you must login to send post
+            //---------------------------***********************
+            val retrofit = Retrofit.Builder()
+                .baseUrl(MainActivity().BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val apiService = retrofit.create(ApiServiceAddPost::class.java)
+            // Prepare textual data
+            val postSubject     = postSubjectInput.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            val postText        = postText.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            val postCategory    = postCategorySpinner.selectedItem.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            val postSubcategory = postSubCategorySpinner.selectedItem.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            val postCity        = postCitySpinner.selectedItem.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+
+            val mainActivity = activity as? MainActivity
+            val usernameD = mainActivity?.getCurrentUser()?.toRequestBody("text/plain".toMediaTypeOrNull())
+            val tokenD    = mainActivity?.getCurrentToken()?.toRequestBody("text/plain".toMediaTypeOrNull())
+
+            Log.i(TAG,"post subject = ${postSubjectInput.text} \n Category = ${postCategorySpinner.selectedItem} " +
+                    "\n sub Category = ${postSubCategorySpinner.selectedItem} \n Citiy = ${postCitySpinner.selectedItem}" +
+                    "\n post text = ${postText} \n selected Images List = ${selectedImagesList.size}"+
+                    "\n ${usernameD} \n ${tokenD}"
+            )
+
+            // Prepare image data
+            // Prepare image data
+            val imageUris = selectedImagesList.map { it.uri }
+            val imageParts = imageUris.mapNotNull { uri ->
+                val file = getFileFromUri(uri)
+
+                if (file != null && file.exists()) {
+                    val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+                    MultipartBody.Part.createFormData("images", file.name, requestFile)
+                } else {
+                    Log.e(TAG, "File does not exist for URI: $uri")
+                    null
+                }
+            }
+
+
+// Make the API call
+            val call: Call<AddPostDataClass> = apiService.AddPost(
+                postSubject,
+                postText,
+                postCategory,
+                postSubcategory,
+                postCity,
+                imageParts,
+                usernameD,
+                tokenD
+
+            )
+
+            call.enqueue(object : Callback<AddPostDataClass> {
+                override fun onResponse(call: Call<AddPostDataClass>, response: Response<AddPostDataClass>) {
+                    if (response.isSuccessful) {
+                        // Handle the successful response here
+                        val responseData = response.body()
+                        Log.i(TAG,responseData.toString())
+                        // Do something with the responseData
+                    } else {
+                        // Handle the error response here
+                        // For example, you can log the error or show a message to the user
+                        Log.e(TAG, "response.is Not Successful X")
+                    }
+                }
+
+                override fun onFailure(call: Call<AddPostDataClass>, t: Throwable) {
+                    // Handle the failure here
+                    // For example, you can log the error or show a message to the user
+                    Log.e(TAG, "onFailure ------->${t.message}")
+                }
+            })
+            //*********************************************************
+
+        }
+
+
 
          return view
     } // end onCreateView------------------------------------------------------------------------------------------------------------------
@@ -325,6 +432,27 @@ class AddPostFragment : Fragment() {
         //----
     }
 
+
+    //------------------******
+    private fun getFileFromUri(uri: Uri): File? {
+        val documentFile = DocumentFile.fromSingleUri(requireContext(), uri)
+        return documentFile?.let {
+            val inputStream: InputStream? = requireContext().contentResolver.openInputStream(uri)
+            val file = File(requireContext().cacheDir, documentFile.name ?: "temp_file")
+            copyInputStreamToFile(inputStream, file)
+            file
+        }
+    }
+
+    private fun copyInputStreamToFile(inputStream: InputStream?, file: File) {
+        try {
+            FileOutputStream(file).use { output ->
+                inputStream?.copyTo(output)
+            }
+        } catch (e: IOException) {
+            Log.e(TAG, "Error copying InputStream to File", e)
+        }
+    }
 
 
 

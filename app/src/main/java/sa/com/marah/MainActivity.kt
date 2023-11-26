@@ -42,6 +42,7 @@ import sa.com.marah.Data.LocationsDataClass
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     public val BASE_URL:String = "http://192.168.8.114:8000/"
+
     private  lateinit var binding: ActivityMainBinding
     private val INTERNET_PERMISSION_REQUEST_CODE = 1
 
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(binding.toolbar)
 
         setupUserName()
+
 
 
         // Check if the internet permission is granted
@@ -240,12 +242,38 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         {
           R.id.btn_account -> openFragment(MyAccountFragment())
           R.id.btn_myPost  -> openFragment(MyPostsFragment())
-          R.id.btn_login   -> openFragment(LoginFragment())
+          R.id.btn_login   -> loginOrlogout()
 
 
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+
+
+    fun loginOrlogout()
+    {
+        val navigationView: NavigationView = findViewById(R.id.navigationDrawer)
+        val menu: Menu = navigationView.menu
+        val loginItem:MenuItem? = menu.findItem(R.id.btn_login)
+        if(loginItem?.title == "تسجيل خروج")
+        {
+            //logout
+            val preferences = getSharedPreferences("Marah.com.sa", Context.MODE_PRIVATE)
+            val editor = preferences.edit()
+            editor.clear()
+            editor.apply()
+            loginItem?.title = "تسجيل دخول"
+            val menuItem: MenuItem? = menu.findItem(R.id.btn_account)
+            menuItem?.title = " حسابي"
+            Toast.makeText(this, "نشوفك على خير", Toast.LENGTH_SHORT).show()
+                openFragment(LoginFragment())
+        }
+        else
+        {
+            openFragment(LoginFragment())
+        }
     }
 
 
@@ -275,6 +303,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationView: NavigationView = findViewById(R.id.navigationDrawer)
         val menu: Menu = navigationView.menu
         val menuItem: MenuItem? = menu.findItem(R.id.btn_account)
+        val loginItem:MenuItem? = menu.findItem(R.id.btn_login)
 
         val preferences = getSharedPreferences("Marah.com.sa", Context.MODE_PRIVATE)
 
@@ -282,7 +311,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         {
             //already username there
             menuItem?.title = preferences.getString("username","")
+            loginItem?.title = "تسجيل خروج"
         }
+    }
+
+
+    public fun getCurrentUser():String?{
+        val preferences = getSharedPreferences("Marah.com.sa", Context.MODE_PRIVATE)
+        val USERNAME = preferences.getString("username","").toString()
+        return USERNAME
+
+
+    }
+
+    public fun getCurrentToken():String?{
+        val preferences = getSharedPreferences("Marah.com.sa", Context.MODE_PRIVATE)
+        val TOKEN    = preferences.getString("token","").toString()
+        return TOKEN
     }
 
 
