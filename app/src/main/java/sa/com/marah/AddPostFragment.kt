@@ -2,6 +2,7 @@ package sa.com.marah
 
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.ContentValues.TAG
@@ -26,6 +27,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ProgressBar
 
 import android.widget.Spinner
 import androidx.documentfile.provider.DocumentFile
@@ -78,6 +80,7 @@ class AddPostFragment : Fragment() {
     //--
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -230,6 +233,8 @@ class AddPostFragment : Fragment() {
         val submitBtn : Button = view.findViewById(R.id.btn_post_submit)
         submitBtn.setOnClickListener()
         {
+            val progressBar: ProgressBar = view.findViewById(R.id.progressBar1)
+            progressBar.visibility = View.VISIBLE
             // get all inputs and send to api/addpost
             Log.i(TAG, "submit button clicked --------------------------------------")
 
@@ -296,6 +301,8 @@ class AddPostFragment : Fragment() {
                         val responseData = response.body()
                         Log.i(TAG,responseData.toString())
                         // Do something with the responseData
+                        progressBar.visibility = View.GONE
+                        (requireActivity() as MainActivity).openFragment(HomeFragment())
                     } else {
                         // Handle the error response here
                         // For example, you can log the error or show a message to the user

@@ -1,183 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="30dp"
-    tools:context=".AddPostFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <ScrollView
-        android:id="@+id/scroll_view_add_post"
+    >
+
+    <ProgressBar
+        android:indeterminateTint="@android:color/black"
+        android:id="@+id/progressBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="30dp"
+        tools:context=".AddPostFragment">
+
+
+        <!-- TODO: Update blank fragment layout -->
+        <ScrollView
+            android:id="@+id/scroll_view_add_post"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/linear_layout_add_post">
-            <!-- Add post Form -->
+            android:layout_height="match_parent">
 
-            <!-- post subject -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField"
+            <LinearLayout
+                android:id="@+id/linear_layout_add_post"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/black"
+                android:orientation="vertical">
+                <!-- Add post Form -->
 
-                android:hint="عنوان الإعلان">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <!-- post subject -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:id="@+id/post_subject"
-                    />
+                    android:hint="عنوان الإعلان"
 
-            </com.google.android.material.textfield.TextInputLayout>
-            <!--/post subject -->
+                    android:textColorHint="@color/black">
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/post_subject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black" />
 
-
-           <TableLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:stretchColumns="0">
-               <TableRow>
-
-                   <!-- category -->
-               <Spinner
-                   android:layout_marginTop="10dp"
-                   android:padding="10dp"
-                   android:background="#DADADA"
-                   android:id="@+id/post_category_Spinner"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:spinnerMode="dropdown"
-
-                   />
-                   <!-- / category -->
-                   <TextView
-                       android:text="التصنيف"
-                       android:textSize="20dp"
-                       android:textColor="@color/black"
-                       android:layout_margin="10dp"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"/>
-               </TableRow>
-
-               <TableRow>
-                   <!-- sub category -->
-
-                   <Spinner
-                       android:layout_marginTop="10dp"
-                       android:padding="10dp"
-                       android:background="#DADADA"
-
-                       android:id="@+id/post_subcategory_Spinner"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:spinnerMode="dropdown"
-
-                       />
-                   <TextView
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:text="التصنيف الفرعي"
-                       android:textSize="20dp"
-                       android:textColor="@color/black"
-                       android:layout_margin="10dp"
-                       />
-
-                   <!-- / sub category -->
-               </TableRow>
-
-               <TableRow>
-                   <!-- post city -->
-
-                   <Spinner
-                       android:layout_marginTop="10dp"
-                       android:padding="10dp"
-                       android:background="#DADADA"
-
-                       android:id="@+id/post_city_Spinner"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:spinnerMode="dropdown"
-
-                       />
-
-                   <TextView
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:text="المدينة"
-                       android:textSize="20dp"
-                       android:textColor="@color/black"
-                       android:layout_margin="10dp"
-                       />
-
-                   <!-- / city -->
-               </TableRow>
+                </com.google.android.material.textfield.TextInputLayout>
+                <!--/post subject -->
 
 
-
-           </TableLayout>
-
-
-            <!-- post text -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/black"
-
-                android:hint="نص الإعلان">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:stretchColumns="0">
+
+                    <TableRow>
+
+                        <!-- category -->
+                        <Spinner
+                            android:id="@+id/post_category_Spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="#DADADA"
+                            android:padding="10dp"
+                            android:spinnerMode="dropdown"
+
+                            />
+                        <!-- / category -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="التصنيف"
+                            android:textColor="@color/black"
+                            android:textSize="20dp" />
+                    </TableRow>
+
+                    <TableRow>
+                        <!-- sub category -->
+
+                        <Spinner
+                            android:id="@+id/post_subcategory_Spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginTop="10dp"
+                            android:background="#DADADA"
+                            android:padding="10dp"
+                            android:spinnerMode="dropdown"
+
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="التصنيف الفرعي"
+                            android:textColor="@color/black"
+                            android:textSize="20dp" />
+
+                        <!-- / sub category -->
+                    </TableRow>
+
+                    <TableRow>
+                        <!-- post city -->
+
+                        <Spinner
+                            android:id="@+id/post_city_Spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginTop="10dp"
+                            android:background="#DADADA"
+                            android:padding="10dp"
+                            android:spinnerMode="dropdown"
+
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="المدينة"
+                            android:textColor="@color/black"
+                            android:textSize="20dp" />
+
+                        <!-- / city -->
+                    </TableRow>
+
+
+                </TableLayout>
+
+
+                <!-- post text -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textField2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="نص الإعلان"
+
+                    android:textColorHint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/post_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <!--/post text -->
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_selectedImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:id="@+id/btn_select_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="أختر الصور"
                     android:textColor="@color/black"
-                    android:id="@+id/post_text"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+
                     />
 
-            </com.google.android.material.textfield.TextInputLayout>
-            <!--/post text -->
+
+                <Button
+                    android:id="@+id/btn_post_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="إرسال"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_selectedImages"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            </LinearLayout>
+        </ScrollView>
 
-            <Button
-                android:layout_margin="10dp"
-                android:id="@+id/btn_select_photo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="أختر الصور"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                 
-                />
+    </LinearLayout>
 
-
-
-
-            <Button
-                android:id="@+id/btn_post_submit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:text="إرسال"
-                android:layout_margin="10dp"
-                />
-
-        </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
