@@ -16,12 +16,11 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import sa.com.marah.Data.ApiPostList
-import sa.com.marah.Data.ApiServiceAddPost
 import sa.com.marah.Data.PostCardDataClass
+import sa.com.marah.Data.PostClickListener
 import sa.com.marah.Data.PostRecyclerAdapter
-import sa.com.marah.Data.SubCategoryDataClass
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), PostClickListener {
     private lateinit var PostRecyclerView: RecyclerView
 
     override fun onCreateView(
@@ -76,7 +75,7 @@ class HomeFragment : Fragment() {
 
     private fun updateRecyclerView(postList: List<PostCardDataClass>) {
         // Assuming you have a RecyclerView.Adapter
-        val adapter = PostRecyclerAdapter(postList)
+        val adapter = PostRecyclerAdapter(postList, this)
         PostRecyclerView.adapter = adapter
         // You might also need to set a LayoutManager if not already set
         // Ensure UI operations are on the main thread
@@ -86,7 +85,15 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onPostClick(post: PostCardDataClass) {
+
+        Log.i(TAG, "you Clicked on POST ${post.id}")
+       // (requireActivity() as MainActivity).openFragment(PostDetailFragment(post))
+
+    }
+
 
 
 
 }
+

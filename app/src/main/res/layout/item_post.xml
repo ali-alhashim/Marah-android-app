@@ -2,16 +2,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/Beige"
+    android:background="@drawable/rounded_card_shape"
     android:layout_margin="10dp"
+
     android:padding="8dp">
 
     <ImageView
+        android:scaleType="fitCenter"
         android:id="@+id/postImage"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_margin="5dp"
-        android:background="@color/extra_dark_primary"/>
+        android:background="@drawable/rounded_shape"/>
 
     <LinearLayout
         android:padding="8dp"
@@ -25,6 +27,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="عنوان الإعلان"
+        android:textColor="@color/black"
         android:textStyle="bold" />
 
         <TextView
@@ -34,19 +37,71 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text=" 3 / مراح الابل / المجاهيم"
+            android:textColor="@color/black"
             android:textStyle="normal" />
 
-        <TextView
-            android:padding="5dp"
-            android:background="@color/extra_dark_primary"
-            android:textColor="@color/black"
+
+        <TableLayout
             android:layout_marginTop="14dp"
-            android:id="@+id/postInfoTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:text="نعيرية Nov. 26, 2023, 7:46 p.m. ali 0"
-            android:textStyle="normal" />
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TableRow>
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/baseline_person_pin_24"/>
+
+            <TextView
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:id="@+id/postCreatedByTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="10dp"
+                android:text="Ali"
+                android:textStyle="normal" />
+            </TableRow>
+            <TableRow>
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+
+                android:src="@drawable/baseline_location_on_24"/>
+                <TextView
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:id="@+id/postLocationTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:text="الرياض"
+                    android:textStyle="normal" />
+            </TableRow>
+
+            <TableRow>
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+
+                    android:src="@drawable/baseline_date_range_24"/>
+                <TextView
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:id="@+id/postCreatedDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:text="Novamber 26, 2023 at 9:00 AM"
+                    android:textStyle="normal" />
+            </TableRow>
+
+        </TableLayout>
 
     </LinearLayout>
 
