@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:background="@drawable/rounded_card_shape"
     android:layout_margin="10dp"
-
+    android:id="@+id/postCardLayout"
     android:padding="8dp">
 
     <ImageView

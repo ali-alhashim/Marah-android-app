@@ -1,19 +1,22 @@
 package sa.com.marah.Data
 
 import android.content.ContentValues.TAG
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import sa.com.marah.HomeFragment
 import sa.com.marah.MainActivity
+import sa.com.marah.PostDetailFragment
 import sa.com.marah.R
 
-class PostRecyclerAdapter(private val postList: List<PostCardDataClass>,  private val clickListener: PostClickListener) :
+
+class PostRecyclerAdapter(private val postList: List<PostCardDataClass>) :
     RecyclerView.Adapter<PostRecyclerAdapter.PostViewHolder>() {
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,7 +26,9 @@ class PostRecyclerAdapter(private val postList: List<PostCardDataClass>,  privat
         val postCreatedByTextView:TextView = itemView.findViewById(R.id.postCreatedByTextView)
         val postLocationTextView:TextView = itemView.findViewById(R.id.postLocationTextView)
         val postCreatedDateTextView:TextView = itemView.findViewById(R.id.postCreatedDateTextView)
-        // Add references to other UI components for additional post details
+        val postCardLayout: LinearLayout = itemView.findViewById(R.id.postCardLayout)
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -42,7 +47,14 @@ class PostRecyclerAdapter(private val postList: List<PostCardDataClass>,  privat
         Log.i(TAG, "the Image data = $imageUrl")
         Glide.with(holder.itemView).load(imageUrl).into(holder.postImage)
         // Set other UI components with post details
-        clickListener.onPostClick(currentPost)
+
+        holder.postCardLayout.setOnClickListener()
+        {
+            Log.i(TAG, "you Click on POST ID = : ${currentPost.id}")
+            val activity = holder.itemView.context as? MainActivity
+            activity?.openFragment(PostDetailFragment(currentPost.id))
+        }
+
     }
 
     override fun getItemCount(): Int {

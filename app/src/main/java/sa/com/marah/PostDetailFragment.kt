@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import sa.com.marah.Data.PostCardDataClass
 
 
-class PostDetailFragment(post: PostCardDataClass) : Fragment() {
+class PostDetailFragment(id: Int) : Fragment() {
 
 
     override fun onCreateView(
