@@ -7,14 +7,24 @@
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
+        android:id="@+id/scrollLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <LinearLayout
+            android:padding="5dp"
+            android:id="@+id/d_post_root_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
 
     <LinearLayout
         android:id="@+id/d_post_layout"
         android:layout_width="match_parent"
         android:background="@drawable/rounded_card_shape"
-        android:layout_margin="25dp"
+        android:layout_margin="20dp"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
@@ -67,7 +77,12 @@
             android:text="هنا نص الاعلان"
             android:layout_height="wrap_content"/>
 
+
+
     </LinearLayout>
+        </LinearLayout><!--Master -->
+
+
     </ScrollView>
 
 </FrameLayout>

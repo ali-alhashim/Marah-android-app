@@ -12,5 +12,6 @@ data class AddPostDataClass(
     val post_subcategory:String,
     val post_city:String,
     val images : List<Uri>,
-    val post_images : List<String>
+    val post_images : List<String>,
+    val comments : List<CommentDataClass>,
 )

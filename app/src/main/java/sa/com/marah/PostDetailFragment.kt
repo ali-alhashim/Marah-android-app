@@ -2,6 +2,8 @@ package sa.com.marah
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -35,6 +38,7 @@ class PostDetailFragment(postId: Int) : Fragment() {
     private lateinit var postSubject:TextView
     private lateinit var postPath:TextView
     private lateinit var postLayout:LinearLayout
+    private lateinit var d_post_root_layout:LinearLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +52,7 @@ class PostDetailFragment(postId: Int) : Fragment() {
         postSubject = view.findViewById(R.id.d_post_subject)
         postPath    = view.findViewById(R.id.d_post_path)
         postLayout  = view.findViewById(R.id.d_post_layout)
+        d_post_root_layout = view.findViewById(R.id.d_post_root_layout)
 
         loadPostDetail(postId)
         return view
@@ -78,7 +83,6 @@ class PostDetailFragment(postId: Int) : Fragment() {
                     {
                       Log.i(TAG, "we get the post detail ${post.id} \n ${post.post_subject} \n ${post.username} \n ${post.post_text} \n ${post.post_images}")
 
-
                         postSubject.text = post.post_subject
                         createdBy.text = post.username
                         postText.text = post.post_text
@@ -94,17 +98,64 @@ class PostDetailFragment(postId: Int) : Fragment() {
                                 .transition(DrawableTransitionOptions.withCrossFade())
                                 .into(imageView)
 
+                            imageView.scaleType = ImageView.ScaleType.FIT_CENTER
+                            val layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
 
-                            val layoutParams =  LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-
-                            layoutParams.setMargins(0, 1,0, 1)
+                            layoutParams.setMargins(5, 5,5, 5)
                             imageView.setPadding(1,1,1,1)
-                            imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
                             imageView.layoutParams = layoutParams
+                            imageView.adjustViewBounds = true
+
+
+
+
 
 
 
                             postLayout.addView(imageView)
+                        }
+
+                        // add post comment
+
+                        for(comment in post.comments)
+                        {
+                            Log.i(TAG,"post comment: By ${comment.comment_user} , ${comment.comment_text}")
+                            val commentLayout:LinearLayout = LinearLayout(requireContext())
+                            commentLayout.setBackgroundResource(R.drawable.rounded_card_shape)
+                            val commentLayoutParams = LinearLayout.LayoutParams(
+                                                                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                                LinearLayout.LayoutParams.WRAP_CONTENT
+                                                                                 )
+                            commentLayoutParams.layoutDirection = LinearLayout.VERTICAL
+
+                            commentLayoutParams.setMargins(5,10,5,10)
+
+                            commentLayout.layoutParams = commentLayoutParams
+                            commentLayout.setPadding(5,5,5,5)
+
+                            val TextCommentBy:TextView = TextView(requireContext())
+                            TextCommentBy.setTextColor(Color.BLACK)
+                            TextCommentBy.setPadding(5,5,5,5)
+                            TextCommentBy.text = comment.comment_user
+
+                            val commentDate:TextView = TextView(requireContext())
+                            commentDate.text = comment.created_date
+                            commentDate.setTextColor(Color.BLACK)
+                            val commentText:TextView = TextView(requireContext())
+                            commentText.setTextColor(Color.BLACK)
+                            commentText.text = comment.comment_text
+                            // Set orientation to vertical for the commentLayout
+                            commentLayout.orientation = LinearLayout.VERTICAL
+                            commentLayout.addView(TextCommentBy)
+                            commentLayout.addView(commentDate)
+                            commentLayout.addView(commentText)
+                            d_post_root_layout.addView(commentLayout)
+
+
+
                         }
 
 
