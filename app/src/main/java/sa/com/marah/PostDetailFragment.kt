@@ -31,9 +31,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import sa.com.marah.Data.AddPostDataClass
+import sa.com.marah.Data.ApiAddPostComment
 import sa.com.marah.Data.ApiPostDetail
 import sa.com.marah.Data.ApiPostList
+import sa.com.marah.Data.ApiServiceLogin
+import sa.com.marah.Data.LoginDataClass
 import sa.com.marah.Data.PostCardDataClass
+import sa.com.marah.Data.postCommentDataClass
 import java.net.URL
 
 
@@ -189,9 +193,10 @@ class PostDetailFragment(postId: Int) : Fragment() {
                         theComment.setTextColor(Color.BLACK)
                         val theCommentParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
+                            200
                         )
                         theComment.hint = "أكتب رساله هنا"
+                        theComment.setHintTextColor(Color.DKGRAY)
                         theCommentParams.setMargins(10,10,10,10)
                         theComment.layoutParams = theCommentParams
                         theComment.setTextSize(TypedValue.COMPLEX_UNIT_SP,14f)
@@ -241,9 +246,31 @@ class PostDetailFragment(postId: Int) : Fragment() {
      //   return imagePaths.map { URL(it) }
    // }
 
-    fun sendCommentPost(postId:Int, byUser:String?, token:String?, theComment:String)
-    {
+    fun sendCommentPost(postId:Int, byUser:String?, token:String?, theComment:String) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(MainActivity().BASE_URL)  // Replace with your API's base URL
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val apiService = retrofit.create(ApiAddPostComment::class.java)
+        val call = apiService.addPostComment(postId, byUser, token, theComment)
 
+        call.enqueue(object : Callback<postCommentDataClass>
+        {
+            override fun onResponse(
+                call: Call<postCommentDataClass>,
+                response: Response<postCommentDataClass>
+            ) {
+                if (response.isSuccessful)
+                {
+                    response.body()?.let { Log.i(TAG, it.status) }
+                    (requireActivity() as MainActivity).openFragment(PostDetailFragment(postId))
+                }
+            }
+
+            override fun onFailure(call: Call<postCommentDataClass>, t: Throwable) {
+               Log.e(TAG, t.message.toString())
+            }
+        })
     }
 
 
