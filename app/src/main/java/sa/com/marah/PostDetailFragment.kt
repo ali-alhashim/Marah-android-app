@@ -216,7 +216,8 @@ class PostDetailFragment(postId: Int) : Fragment() {
                             val mainActivity = activity as? MainActivity
                             Log.i(TAG, "you want to add the following comment ${theComment.text} \n" +
                                     "by ${mainActivity?.getCurrentUser()} \n" +
-                                    "with token ${mainActivity?.getCurrentToken()}")
+                                    "with token ${mainActivity?.getCurrentToken()} for postId ${post.id}")
+                            sendCommentPost(post.id, mainActivity?.getCurrentUser(), mainActivity?.getCurrentToken(), theComment.text.toString())
                         }
 
 
@@ -236,8 +237,13 @@ class PostDetailFragment(postId: Int) : Fragment() {
 
 
 
-    fun convertToUrlList(imagePaths: List<String>): List<URL> {
-        return imagePaths.map { URL(it) }
+   // fun convertToUrlList(imagePaths: List<String>): List<URL> {
+     //   return imagePaths.map { URL(it) }
+   // }
+
+    fun sendCommentPost(postId:Int, byUser:String?, token:String?, theComment:String)
+    {
+
     }
 
 
