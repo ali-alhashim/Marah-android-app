@@ -7,14 +7,20 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.setMargins
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -137,16 +143,26 @@ class PostDetailFragment(postId: Int) : Fragment() {
                             commentLayout.setPadding(5,5,5,5)
 
                             val TextCommentBy:TextView = TextView(requireContext())
+                            val textCommentByParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            textCommentByParams.setMargins(10, 10, 10, 10)
+                            TextCommentBy.layoutParams = textCommentByParams
                             TextCommentBy.setTextColor(Color.BLACK)
                             TextCommentBy.setPadding(5,5,5,5)
+
                             TextCommentBy.text = comment.comment_user
 
                             val commentDate:TextView = TextView(requireContext())
                             commentDate.text = comment.created_date
+                            commentDate.setTextSize(TypedValue.COMPLEX_UNIT_SP,9f)
                             commentDate.setTextColor(Color.BLACK)
                             val commentText:TextView = TextView(requireContext())
                             commentText.setTextColor(Color.BLACK)
                             commentText.text = comment.comment_text
+                            commentText.layoutParams = textCommentByParams
+                            commentText.setTextSize(TypedValue.COMPLEX_UNIT_SP,18f)
                             // Set orientation to vertical for the commentLayout
                             commentLayout.orientation = LinearLayout.VERTICAL
                             commentLayout.addView(TextCommentBy)
@@ -158,6 +174,50 @@ class PostDetailFragment(postId: Int) : Fragment() {
 
                         }
 
+                        // add TextEdit for adding user comment
+                        val AddingCommentLayout:LinearLayout = LinearLayout(requireContext())
+                        AddingCommentLayout.setBackgroundResource(R.drawable.rounded_card_shape)
+                        val AddingcommentLayoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        AddingCommentLayout.layoutParams = AddingcommentLayoutParams
+                        AddingCommentLayout.orientation = LinearLayout.VERTICAL
+                        AddingCommentLayout.setPadding(10,10,10,10)
+
+                        val theComment = EditText(requireContext())
+                        theComment.setTextColor(Color.BLACK)
+                        val theCommentParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        theComment.hint = "أكتب رساله هنا"
+                        theCommentParams.setMargins(10,10,10,10)
+                        theComment.layoutParams = theCommentParams
+                        theComment.setTextSize(TypedValue.COMPLEX_UNIT_SP,14f)
+                        theComment.setPadding(5,5,5,5)
+                        theComment.setBackgroundColor(Color.WHITE)
+                        AddingCommentLayout.addView(theComment)
+
+                        val sendBtn = Button(requireContext())
+                        sendBtn.setTextColor(Color.BLACK)
+                        sendBtn.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.extra_dark_primary))
+                        sendBtn.text = "إرسال"
+                        sendBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                        AddingCommentLayout.addView(sendBtn)
+
+                        d_post_root_layout.addView(AddingCommentLayout)
+
+
+                        sendBtn.setOnClickListener()
+                        {
+                            // send comment to api/add/NewComment
+                            // comment value, by user with his token
+                            val mainActivity = activity as? MainActivity
+                            Log.i(TAG, "you want to add the following comment ${theComment.text} \n" +
+                                    "by ${mainActivity?.getCurrentUser()} \n" +
+                                    "with token ${mainActivity?.getCurrentToken()}")
+                        }
 
 
                     }
