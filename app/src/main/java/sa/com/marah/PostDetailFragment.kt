@@ -196,17 +196,19 @@ class PostDetailFragment(postId: Int) : Fragment() {
                             200
                         )
                         theComment.hint = "أكتب رساله هنا"
+
                         theComment.setHintTextColor(Color.DKGRAY)
                         theCommentParams.setMargins(10,10,10,10)
                         theComment.layoutParams = theCommentParams
                         theComment.setTextSize(TypedValue.COMPLEX_UNIT_SP,14f)
                         theComment.setPadding(5,5,5,5)
-                        theComment.setBackgroundColor(Color.WHITE)
+                        theComment.setBackgroundResource(R.drawable.rounded_shap_white)
                         AddingCommentLayout.addView(theComment)
 
                         val sendBtn = Button(requireContext())
                         sendBtn.setTextColor(Color.BLACK)
-                        sendBtn.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.extra_dark_primary))
+
+                        sendBtn.setBackgroundResource(R.drawable.rounded_shape)
                         sendBtn.text = "إرسال"
                         sendBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
                         AddingCommentLayout.addView(sendBtn)

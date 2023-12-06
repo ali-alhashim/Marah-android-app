@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".PostDetailFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -80,6 +81,66 @@
 
 
     </LinearLayout>
+
+            <LinearLayout
+                android:background="@drawable/rounded_card_shape"
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+
+                android:layout_height="wrap_content">
+                <!--post tools-->
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.Icon"
+                   android:text="بلاغ"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/extra_dark_primary"
+                    app:icon="@drawable/baseline_report_24"
+                    app:iconGravity="end"
+                    app:backgroundTint="@color/black"
+                />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.Icon"
+                    android:text="تفضيل"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/extra_dark_primary"
+                    app:icon="@drawable/baseline_star_24"
+                    app:iconGravity="end"
+                    app:backgroundTint="@color/black"
+                    />
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.Icon"
+                    android:text="مراسلة"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/extra_dark_primary"
+                    app:icon="@drawable/baseline_send_24"
+                    app:iconGravity="end"
+                    app:backgroundTint="@color/black"
+                    />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+
+            </LinearLayout>
+
         </LinearLayout><!--Master -->
 
 
