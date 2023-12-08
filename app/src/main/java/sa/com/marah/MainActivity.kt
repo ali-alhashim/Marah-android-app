@@ -126,10 +126,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
    private fun handleCityButtonClick(citiyId:Int)
    {
        Log.i(TAG,"you click on cite Id : ${citiyId}")
+       openFragment(HomeFragment(1,0,0,citiyId))
    }
     private fun handleCategoryButtonClick(categoryId:Int)
     {
         Log.i(TAG,"you click on Category Id : ${categoryId}")
+        // open Homne fragment with this category id
+        openFragment(HomeFragment(1,categoryId,0,0))
+
     }
 
    private fun showCategoriesSheet()
@@ -159,6 +163,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                // Handle button click, you can use location.id here
                                // For example, pass it to another function or start a new activity
                                handleCategoryButtonClick(category.id)
+                               // hide showCategoriesSheet
+                               dialog.hide()
                            }
                            CategoryLayout.addView(catrgoryButton)
                        }
@@ -210,6 +216,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 // Handle button click, you can use location.id here
                                 // For example, pass it to another function or start a new activity
                                 handleCityButtonClick(location.id)
+                                dialog.hide()
                             }
                             CitiesLayout.addView(cityButton)
                         }

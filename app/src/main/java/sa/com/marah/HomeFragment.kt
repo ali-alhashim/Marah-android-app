@@ -20,9 +20,12 @@ import sa.com.marah.Data.PostCardDataClass
 
 import sa.com.marah.Data.PostRecyclerAdapter
 
-class HomeFragment : Fragment() {
+class HomeFragment(page:Int=1,categoryId:Int =0,subcategoryId:Int=0, citeId:Int =0) : Fragment() {
     private lateinit var PostRecyclerView: RecyclerView
-
+    val categoryId = categoryId
+    val subcategoryId = subcategoryId
+    val citeId = citeId
+    val page = page
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,13 +34,14 @@ class HomeFragment : Fragment() {
         Log.d(ContentValues.TAG, "HomeFragment onCreateView")
         val view =  inflater.inflate(R.layout.fragment_home, container, false)
         PostRecyclerView = view.findViewById(R.id.PostsRecyclerView)
-        loadPostList()
+
+        loadPostList(page,categoryId,subcategoryId, citeId)
 
         return view
     } // end of on createView
 
 
-    fun loadPostList(page:Int=1,category:String="all", subcategory:String="all", location:String="all" )
+    fun loadPostList(page:Int=1,category:Int=0, subcategory:Int=0, location:Int=0 )
     {
         val retrofit = Retrofit.Builder()
             .baseUrl(MainActivity().BASE_URL)

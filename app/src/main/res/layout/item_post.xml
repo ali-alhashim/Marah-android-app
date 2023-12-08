@@ -31,7 +31,7 @@
         android:textStyle="bold" />
 
         <TextView
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/postPathTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,6 +77,7 @@
                     android:id="@+id/postLocationTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
                     android:textSize="10dp"
                     android:text="الرياض"
                     android:textStyle="normal" />
@@ -96,7 +97,7 @@
                     android:id="@+id/postCreatedDateTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="10dp"
+                    android:textSize="9dp"
                     android:text="Novamber 26, 2023 at 9:00 AM"
                     android:textStyle="normal" />
             </TableRow>
