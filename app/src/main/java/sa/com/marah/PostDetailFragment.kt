@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.button.MaterialButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,7 +53,7 @@ class PostDetailFragment(postId: Int) : Fragment() {
     private lateinit var postPath:TextView
     private lateinit var postLayout:LinearLayout
     private lateinit var d_post_root_layout:LinearLayout
-    private lateinit var d_post_add_favorite:Button
+    private lateinit var d_post_add_favorite: MaterialButton
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,6 +101,9 @@ class PostDetailFragment(postId: Int) : Fragment() {
                 if(response.isSuccessful)
                 {
                     Toast.makeText(requireContext(), "${response.body()?.status}", Toast.LENGTH_LONG).show()
+                    // reload post detail
+                    (requireActivity() as MainActivity).openFragment(PostDetailFragment(postId))
+
                 }
             }
 
@@ -117,8 +121,12 @@ class PostDetailFragment(postId: Int) : Fragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiPostDetail::class.java)
-        apiService.getPost(postId).enqueue(object :
+        val mainActivity = activity as? MainActivity
+        val username = mainActivity?.getCurrentUser()
+
+        apiService.getPost(postId, username).enqueue(object :
             Callback<AddPostDataClass> {
+            @SuppressLint("ResourceType")
             override fun onResponse(
                 call: Call<AddPostDataClass>,
                 response: Response<AddPostDataClass>
@@ -272,6 +280,17 @@ class PostDetailFragment(postId: Int) : Fragment() {
                     }
                     else{
                         Log.e(TAG, "post = null !")
+                    }
+
+                    if (post != null) {
+                        if(post.isInMyFavorite)
+                        {
+                          Log.i(TAG,"this post in your favorite so we change the star icon color to gold color")
+                            // Get the color resource for gold
+
+
+                           d_post_add_favorite.iconTint = ContextCompat.getColorStateList(requireContext(), R.color.gold)
+                        }
                     }
 
                 }

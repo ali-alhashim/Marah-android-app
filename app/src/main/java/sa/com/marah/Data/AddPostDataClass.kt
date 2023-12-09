@@ -14,4 +14,5 @@ data class AddPostDataClass(
     val images : List<Uri>,
     val post_images : List<String>,
     val comments : List<CommentDataClass>,
+    val isInMyFavorite:Boolean
 )
