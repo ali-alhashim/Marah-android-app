@@ -18,6 +18,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
@@ -30,8 +31,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import sa.com.marah.Data.AddFavoriteDataClass
 import sa.com.marah.Data.AddPostDataClass
 import sa.com.marah.Data.ApiAddPostComment
+import sa.com.marah.Data.ApiAddToMyFavorite
 import sa.com.marah.Data.ApiPostDetail
 import sa.com.marah.Data.ApiPostList
 import sa.com.marah.Data.ApiServiceLogin
@@ -49,6 +52,7 @@ class PostDetailFragment(postId: Int) : Fragment() {
     private lateinit var postPath:TextView
     private lateinit var postLayout:LinearLayout
     private lateinit var d_post_root_layout:LinearLayout
+    private lateinit var d_post_add_favorite:Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,9 +67,46 @@ class PostDetailFragment(postId: Int) : Fragment() {
         postPath    = view.findViewById(R.id.d_post_path)
         postLayout  = view.findViewById(R.id.d_post_layout)
         d_post_root_layout = view.findViewById(R.id.d_post_root_layout)
+        d_post_add_favorite = view.findViewById(R.id.d_post_add_favorite)
+
+        d_post_add_favorite.setOnClickListener()
+        {
+            Log.i(TAG,"Add this post to your favorite :${postId}")
+            // user, postId, token
+            val mainActivity = activity as? MainActivity
+            val username = mainActivity?.getCurrentUser()
+            val token    = mainActivity?.getCurrentToken()
+            AddToMyFavorite(username, token, postId)
+        }
 
         loadPostDetail(postId)
         return view
+    }
+
+    fun AddToMyFavorite(username:String?, token:String?, postId: Int)
+    {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(MainActivity().BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiAddToMyFavorite::class.java)
+        apiService.addToMyFavorite(postId, username, token).enqueue(object :
+            Callback<AddFavoriteDataClass> {
+            override fun onResponse(
+                call: Call<AddFavoriteDataClass>,
+                response: Response<AddFavoriteDataClass>
+            ) {
+                if(response.isSuccessful)
+                {
+                    Toast.makeText(requireContext(), "${response.body()?.status}", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<AddFavoriteDataClass>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
 

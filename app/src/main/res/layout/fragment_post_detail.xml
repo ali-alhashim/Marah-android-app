@@ -109,6 +109,7 @@
                 />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/d_post_add_favorite"
                     style="@style/Widget.MaterialComponents.Button.Icon"
                     android:text="تفضيل"
                     android:layout_margin="5dp"
