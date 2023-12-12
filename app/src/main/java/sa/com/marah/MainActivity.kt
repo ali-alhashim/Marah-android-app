@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.btn_home -> openFragment(HomeFragment())
                 R.id.btn_add_post -> openFragment(AddPostFragment())
                 R.id.btn_messages -> openFragment(MessagesFragment())
-                R.id.btn_search -> openFragment(SearchFragment())
+                R.id.btn_search -> searchDailog()
             }
             true
 
@@ -133,6 +133,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Log.i(TAG,"you click on Category Id : ${categoryId}")
         // open Homne fragment with this category id
         openFragment(HomeFragment(1,categoryId,0,0))
+
+    }
+
+    private fun searchDailog()
+    {
+        val dialog:Dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.bottom_sheet_layout_search)
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.BOTTOM)
 
     }
 

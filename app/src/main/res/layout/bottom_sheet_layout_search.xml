@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/dialog_bg"
+    android:id="@+id/searchBottomSheet"
+    android:layout_height="350dp"
+
+
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:text="- - -"
+        android:textStyle="bold"
+        android:textColor="#5C5A59"
+        android:textAlignment="center"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchLinearLayout"
+            android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="18dp"
+            android:hint="اكتب كلمة البحث هنا"
+            android:id="@+id/searchKeyWord"
+            android:layout_height="wrap_content"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:text="بحث"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:id="@+id/BtnSearch"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
