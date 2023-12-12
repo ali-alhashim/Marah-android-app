@@ -20,12 +20,15 @@ import sa.com.marah.Data.PostCardDataClass
 
 import sa.com.marah.Data.PostRecyclerAdapter
 
-class HomeFragment(page:Int=1,categoryId:Int =0,subcategoryId:Int=0, citeId:Int =0) : Fragment() {
+class HomeFragment(page:Int=1,categoryId:Int =0,subcategoryId:Int=0, citeId:Int =0, isInMyFavorite:Boolean = false, username:String?="",token:String?="") : Fragment() {
     private lateinit var PostRecyclerView: RecyclerView
     val categoryId = categoryId
     val subcategoryId = subcategoryId
     val citeId = citeId
     val page = page
+    val isInMyFavorite = isInMyFavorite
+    val username = username
+    val token = token
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,7 +51,7 @@ class HomeFragment(page:Int=1,categoryId:Int =0,subcategoryId:Int=0, citeId:Int 
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiPostList::class.java)
-        apiService.getPostList(page,category, subcategory, location).enqueue(object :
+        apiService.getPostList(page,category, subcategory, location, isInMyFavorite, username, token).enqueue(object :
             Callback<List<PostCardDataClass>> {
             override fun onResponse(
                 call: Call<List<PostCardDataClass>>,

@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         binding.bottomNavigation.setOnItemSelectedListener{ item ->
             when(item.itemId){
-                R.id.btn_favort -> openFragment(FavoriteFragment())
+                R.id.btn_favort -> openFragment(HomeFragment( 1,0,0,0, true, this.getCurrentUser() ,this.getCurrentToken())) // open home fragment with filter for post in my favorite
                 R.id.btn_home -> openFragment(HomeFragment())
                 R.id.btn_add_post -> openFragment(AddPostFragment())
                 R.id.btn_messages -> openFragment(MessagesFragment())
