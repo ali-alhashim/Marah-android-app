@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -146,6 +147,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.BOTTOM)
+
+        val view = dialog.findViewById<View>(R.id.searchBottomSheet)
+        if(view !=null)
+        {
+            Log.i(TAG,"you clcik on search btn ....")
+            val searchBtn:Button = dialog.findViewById(R.id.BtnSearch)
+            searchBtn.setOnClickListener()
+            {
+                val searchKeyWord:EditText = dialog.findViewById(R.id.searchKeyWord)
+                val theSearchWord = searchKeyWord.text.toString()
+                openFragment(HomeFragment(1,0,0,0,false,"","",theSearchWord))
+                dialog.hide()
+            }
+        }
+        else
+        {
+            Log.e(TAG,"the View is null there for we can't set click listener !")
+        }
+
 
     }
 

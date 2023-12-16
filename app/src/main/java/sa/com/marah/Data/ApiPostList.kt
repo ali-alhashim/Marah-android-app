@@ -10,6 +10,7 @@ interface ApiPostList {
                     @Query("location") location: Int,
                     @Query("isInMyFavorite") isInMyFavorite :Boolean,
                     @Query("username") username :String?,
-                    @Query("token") token:String?
+                    @Query("token") token:String?,
+                    @Query("searchKeyWord") searchKeyWord:String
                     ): Call<List<PostCardDataClass>>
 }
