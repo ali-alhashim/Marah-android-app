@@ -1,6 +1,7 @@
 package sa.com.marah
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -8,10 +9,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -36,11 +39,13 @@ import sa.com.marah.Data.AddFavoriteDataClass
 import sa.com.marah.Data.AddPostDataClass
 import sa.com.marah.Data.ApiAddPostComment
 import sa.com.marah.Data.ApiAddToMyFavorite
+import sa.com.marah.Data.ApiComplaint
 import sa.com.marah.Data.ApiPostDetail
 import sa.com.marah.Data.ApiPostList
 import sa.com.marah.Data.ApiServiceLogin
 import sa.com.marah.Data.LoginDataClass
 import sa.com.marah.Data.PostCardDataClass
+import sa.com.marah.Data.complaintData
 import sa.com.marah.Data.postCommentDataClass
 import java.net.URL
 
@@ -54,6 +59,10 @@ class PostDetailFragment(postId: Int) : Fragment() {
     private lateinit var postLayout:LinearLayout
     private lateinit var d_post_root_layout:LinearLayout
     private lateinit var d_post_add_favorite: MaterialButton
+    private lateinit var complaintBtn :MaterialButton
+    private lateinit var complaintSubject:EditText
+    private lateinit var complaintText:EditText
+    private lateinit var complaintSendBtn:Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,6 +79,9 @@ class PostDetailFragment(postId: Int) : Fragment() {
         d_post_root_layout = view.findViewById(R.id.d_post_root_layout)
         d_post_add_favorite = view.findViewById(R.id.d_post_add_favorite)
 
+        complaintBtn        = view.findViewById(R.id.complaintBtn)
+
+
         d_post_add_favorite.setOnClickListener()
         {
             Log.i(TAG,"Add this post to your favorite :${postId}")
@@ -80,8 +92,69 @@ class PostDetailFragment(postId: Int) : Fragment() {
             AddToMyFavorite(username, token, postId)
         }
 
+        complaintBtn.setOnClickListener()
+        {
+            Log.i(TAG,"send complaint for this post")
+            val mainActivity = activity as? MainActivity
+            val username = mainActivity?.getCurrentUser()
+            complaintBox(username, postId)
+        }
+
         loadPostDetail(postId)
         return view
+    }
+
+    fun complaintBox(username:String?,postId: Int)
+    {
+        val dialog: Dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.complaint_sheet_layout)
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.BOTTOM)
+
+        complaintSubject    = dialog.findViewById(R.id.complaintSubject)
+        complaintText       = dialog.findViewById(R.id.complaintText)
+        complaintSendBtn    = dialog.findViewById(R.id.complaintSendBtn)
+
+        complaintSendBtn.setOnClickListener()
+        {
+            sendComplain(username, postId)
+            dialog.hide()
+        }
+
+
+    }
+
+    fun sendComplain(username:String?,postId: Int)
+    {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(MainActivity().BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val apiService = retrofit.create(ApiComplaint::class.java)
+        apiService.AddComplaint(username, complaintSubject.text.toString(),complaintText.text.toString(), postId)
+            .enqueue(object :Callback<complaintData>{
+                override fun onResponse(
+                    call: Call<complaintData>,
+                    response: Response<complaintData>
+                ) {
+                    Log.i(TAG, response.body()?.status.toString())
+                    if(response.isSuccessful)
+                    {
+                        Log.i(TAG,"complaint sent")
+
+                    }
+
+                }
+
+                override fun onFailure(call: Call<complaintData>, t: Throwable) {
+                    Log.e(TAG,t.message.toString())
+                }
+            })
+
     }
 
     fun AddToMyFavorite(username:String?, token:String?, postId: Int)

@@ -97,6 +97,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.MaterialComponents.Button.Icon"
+                    android:id="@+id/complaintBtn"
                    android:text="بلاغ"
                     android:layout_margin="5dp"
                     android:layout_width="wrap_content"
