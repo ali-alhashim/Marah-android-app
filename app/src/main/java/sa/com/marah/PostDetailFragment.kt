@@ -60,6 +60,7 @@ class PostDetailFragment(postId: Int) : Fragment() {
     private lateinit var d_post_root_layout:LinearLayout
     private lateinit var d_post_add_favorite: MaterialButton
     private lateinit var complaintBtn :MaterialButton
+    private lateinit var btnSendMessage:MaterialButton
     private lateinit var complaintSubject:EditText
     private lateinit var complaintText:EditText
     private lateinit var complaintSendBtn:Button
@@ -80,7 +81,7 @@ class PostDetailFragment(postId: Int) : Fragment() {
         d_post_add_favorite = view.findViewById(R.id.d_post_add_favorite)
 
         complaintBtn        = view.findViewById(R.id.complaintBtn)
-
+        btnSendMessage      = view.findViewById(R.id.btnSendMessage)
 
         d_post_add_favorite.setOnClickListener()
         {
@@ -100,8 +101,21 @@ class PostDetailFragment(postId: Int) : Fragment() {
             complaintBox(username, postId)
         }
 
+        btnSendMessage.setOnClickListener()
+        {
+            Log.i(TAG,"send message to post user")
+            val mainActivity = activity as? MainActivity
+            val username = mainActivity?.getCurrentUser()
+            sendPostMessage(username, createdBy.text.toString())
+        }
+
         loadPostDetail(postId)
         return view
+    }
+
+    fun sendPostMessage(from_user:String?,send_to:String)
+    {
+
     }
 
     fun complaintBox(username:String?,postId: Int)
@@ -130,6 +144,11 @@ class PostDetailFragment(postId: Int) : Fragment() {
 
     fun sendComplain(username:String?,postId: Int)
     {
+        if(username?.length!! < 1)
+        {
+            Toast.makeText(requireContext(), "يجب تسجيل الدخول أولا", Toast.LENGTH_SHORT).show()
+            return
+        }
         val retrofit = Retrofit.Builder()
             .baseUrl(MainActivity().BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -145,6 +164,7 @@ class PostDetailFragment(postId: Int) : Fragment() {
                     if(response.isSuccessful)
                     {
                         Log.i(TAG,"complaint sent")
+                        Toast.makeText(requireContext(), "تم إستلام البلاغ شكراً لكم", Toast.LENGTH_SHORT).show()
 
                     }
 
@@ -159,6 +179,11 @@ class PostDetailFragment(postId: Int) : Fragment() {
 
     fun AddToMyFavorite(username:String?, token:String?, postId: Int)
     {
+        if(username?.length!! < 1)
+        {
+            Toast.makeText(requireContext(), "يجب تسجيل الدخول أولا", Toast.LENGTH_SHORT).show()
+           return
+        }
         val retrofit = Retrofit.Builder()
             .baseUrl(MainActivity().BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
