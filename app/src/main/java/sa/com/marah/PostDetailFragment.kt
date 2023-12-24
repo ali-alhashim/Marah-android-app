@@ -42,6 +42,7 @@ import sa.com.marah.Data.ApiAddToMyFavorite
 import sa.com.marah.Data.ApiComplaint
 import sa.com.marah.Data.ApiPostDetail
 import sa.com.marah.Data.ApiPostList
+import sa.com.marah.Data.ApiSendPostMessage
 import sa.com.marah.Data.ApiServiceLogin
 import sa.com.marah.Data.LoginDataClass
 import sa.com.marah.Data.PostCardDataClass
@@ -64,6 +65,11 @@ class PostDetailFragment(postId: Int) : Fragment() {
     private lateinit var complaintSubject:EditText
     private lateinit var complaintText:EditText
     private lateinit var complaintSendBtn:Button
+
+    private lateinit var messagePostSubject :EditText
+    private lateinit var messagePostText :EditText
+    private lateinit var messagePostSendBtn:Button
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,15 +112,57 @@ class PostDetailFragment(postId: Int) : Fragment() {
             Log.i(TAG,"send message to post user")
             val mainActivity = activity as? MainActivity
             val username = mainActivity?.getCurrentUser()
-            sendPostMessage(username, createdBy.text.toString())
+            val token    = mainActivity?.getCurrentToken()
+            sendPostMessage(username,token, createdBy.text.toString())
         }
 
         loadPostDetail(postId)
         return view
     }
 
-    fun sendPostMessage(from_user:String?,send_to:String)
+    fun sendPostMessage(from_user:String?,token:String?,send_to:String)
     {
+        val dialog: Dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.bottom_sheet_layout_send_message)
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.BOTTOM)
+
+        messagePostSubject = dialog.findViewById(R.id.messagePostSubject)
+        messagePostText    = dialog.findViewById(R.id.messagePostText)
+        messagePostSendBtn = dialog.findViewById(R.id.messagePostSendBtn)
+
+        messagePostSendBtn.setOnClickListener()
+        {
+            Log.i(TAG,"send POST Message ...>")
+            dialog.hide()
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl(MainActivity().BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val apiService = retrofit.create(ApiSendPostMessage::class.java)
+            apiService.sendPostMessage(from_user, token, send_to, messagePostText.text.toString(), messagePostSubject.text.toString())
+                .enqueue(object :Callback<postCommentDataClass>{
+                    override fun onResponse(
+                        call: Call<postCommentDataClass>,
+                        response: Response<postCommentDataClass>
+                    ) {
+                        if(response.isSuccessful)
+                        {
+                            Toast.makeText(requireContext(), response.body()?.status.toString(), Toast.LENGTH_LONG).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<postCommentDataClass>, t: Throwable) {
+                        Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_LONG).show()
+                    }
+
+                })
+        }
 
     }
 
